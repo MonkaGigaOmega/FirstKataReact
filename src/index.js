@@ -1,17 +1,48 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import AppHeader from './components/AppHeader';
+import Footer from './components/Footer';
+import TaskList from './components/TaskList';
+import './App.css'
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+const tasks = [
+  {
+    id: 1,
+    title: 'Completed task',
+    description: 'Completed task',
+    isCompleted: true,
+    isEditing: false,
+    createdAt: new Date(),
+  },
+  {
+    id: 2,
+    title: 'Editing task',
+    description: 'Editing task',
+    isCompleted: false,
+    isEditing: true,
+    createdAt: new Date(),
+  },
+  {
+    id: 3,
+    title: 'Active task',
+    description: 'Active task',
+    isCompleted: false,
+    isEditing: false,
+    createdAt: new Date(),
+  },
+];
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+
+function App(){
+  return (
+    <section className='main'>
+      <AppHeader />
+      <TaskList tasks={tasks} />
+      <Footer/>
+    </section>
+  );
+}
+
+const rootElement = document.getElementById('root');
+const root = ReactDOM.createRoot(rootElement);
+root.render(<App />);
