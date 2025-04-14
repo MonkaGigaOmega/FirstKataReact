@@ -1,10 +1,10 @@
 import NewTaskForm from './NewTaskForm.js'
 
-const AppHeader = () => {
+const AppHeader = ({tasks, setTasks}) => {
     return(
       <>
       <h1>todos</h1>
-      <NewTaskForm/>
+      <NewTaskForm tasks={tasks} setTasks={setTasks}/>
       </>
     )
   };

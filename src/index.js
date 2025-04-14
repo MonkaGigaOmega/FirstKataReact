@@ -11,7 +11,6 @@ function App(){
     [
       {
         id: 1,
-        title: 'Completed task',
         description: 'Completed task',
         isCompleted: true,
         isEditing: false,
@@ -19,7 +18,6 @@ function App(){
       },
       {
         id: 2,
-        title: 'Editing task',
         description: 'Editing task',
         isCompleted: false,
         isEditing: true,
@@ -27,7 +25,6 @@ function App(){
       },
       {
         id: 3,
-        title: 'Active task',
         description: 'Active task',
         isCompleted: false,
         isEditing: false,
@@ -36,11 +33,13 @@ function App(){
     ]
   )
 
+  const [filteredTasks, setFilteredTasks] = useState(tasks);
+
   return (
     <section className='main'>
-      <AppHeader/>
+      <AppHeader tasks={tasks} setTasks={setTasks}/>
       <TaskList tasks={tasks} setTasks={setTasks}/>
-      <Footer/>
+      <Footer tasks={tasks} setTasks={setTasks} filteredTasks={filteredTasks} setFilteredTasks={setFilteredTasks}/>
     </section>
   );
 }

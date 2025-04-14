@@ -1,37 +1,32 @@
 // components/Task.js
 import { formatDistanceToNow } from 'date-fns';
-import { useState } from 'react';
 
-const Task = ({ onDestroy,task }) => {
+const Task = ({ onCompleted, onDestroy,task }) => {
 
-const { title, description, isCompleted, isEditing, createdAt} = task;
+const { description, isCompleted, isEditing, createdAt} = task;
 
 const formattedDate = formatDistanceToNow(createdAt, { addSuffix: true });
 
-const [completed, setCompleted] = useState(isCompleted);
 
-const toggleCompleted = () => {
-  setCompleted(!completed);
-};
 
   return (
-    <li className={`${completed ? 'completed' : ''} ${isEditing ? 'editing' : ''}`}>
+    <li className={`${isCompleted ? 'completed' : ''} ${isEditing ? 'editing' : ''}`}>
       <div className="view" >
       <input
           className="toggle"
           type="checkbox"
-          checked={completed}
+          checked={isCompleted}
           readOnly
-          onChange={toggleCompleted}
+          onChange={()=>onCompleted(task.id)}
         />
-        <label onClick={toggleCompleted}>
+        <label onClick={()=>onCompleted(task.id)}>
           <span className="description">{description}</span>
           <span className="created">{formattedDate}</span>
         </label>
         <button className="icon icon-edit"></button>
         <button className="icon icon-destroy" onClick={()=>onDestroy(task.id)}></button>
       </div>
-      {isEditing && <input type="text" className="edit" value={title} readOnly />}
+      {isEditing && <input type="text" className="edit" value={description} readOnly />}
     </li>
   );
 };
