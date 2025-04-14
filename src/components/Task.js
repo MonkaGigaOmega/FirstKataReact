@@ -2,8 +2,11 @@
 import { formatDistanceToNow } from 'date-fns';
 import { useState } from 'react';
 
-const Task = ({ title, description, isCompleted, isEditing, createdAt,isGood }) => {
-  const formattedDate = formatDistanceToNow(createdAt, { addSuffix: true });
+const Task = ({ onDestroy,task }) => {
+
+const { title, description, isCompleted, isEditing, createdAt} = task;
+
+const formattedDate = formatDistanceToNow(createdAt, { addSuffix: true });
 
 const [completed, setCompleted] = useState(isCompleted);
 
@@ -11,12 +14,8 @@ const toggleCompleted = () => {
   setCompleted(!completed);
 };
 
-const [good,setGood] = useState(isGood);
-const toggleGood=()=>{
-  setGood(!good)
-}
   return (
-    <li className={`${completed ? 'completed' : ''} ${isEditing ? 'editing' : ''}`} style={!good?{display:`block`}:{display:'none'}}>
+    <li className={`${completed ? 'completed' : ''} ${isEditing ? 'editing' : ''}`}>
       <div className="view" >
       <input
           className="toggle"
@@ -30,7 +29,7 @@ const toggleGood=()=>{
           <span className="created">{formattedDate}</span>
         </label>
         <button className="icon icon-edit"></button>
-        <button className="icon icon-destroy" onClick={toggleGood}></button>
+        <button className="icon icon-destroy" onClick={()=>onDestroy(task.id)}></button>
       </div>
       {isEditing && <input type="text" className="edit" value={title} readOnly />}
     </li>
