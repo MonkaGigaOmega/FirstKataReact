@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import AppHeader from './components/AppHeader';
 import Footer from './components/Footer';
 import TaskList from './components/TaskList';
-import './App.css'
+import './styles.css'
 
 const tasks = [
   {
@@ -36,8 +36,8 @@ const tasks = [
 function App(){
   return (
     <section className='main'>
-      <AppHeader />
-      <TaskList tasks={tasks} />
+      <AppHeader/>
+      <TaskList tasks={tasks}/>
       <Footer/>
     </section>
   );

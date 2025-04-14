@@ -1,14 +1,10 @@
-
+import FooterFilter from './FooterFilter.js'
 const Footer = () => {
   return (
     <>
     <footer className="footer">
     <span className="todo-count">1 items left</span>
-    <ul className="filters">
-    <li><button className="selected">All</button></li>
-    <li><button>Active</button></li>
-    <li><button>Completed</button></li>
-    </ul>
+    <FooterFilter/>
     <button className="clear-completed">Clear completed</button>
     </footer>
     </>
