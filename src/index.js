@@ -13,21 +13,18 @@ function App(){
         id: 1,
         description: 'Completed task',
         isCompleted: true,
-        isEditing: false,
         createdAt: new Date(),
       },
       {
         id: 2,
-        description: 'Editing task',
+        description: 'Active task',
         isCompleted: false,
-        isEditing: true,
         createdAt: new Date(),
       },
       {
         id: 3,
         description: 'Active task',
         isCompleted: false,
-        isEditing: false,
         createdAt: new Date(),
       },
     ]

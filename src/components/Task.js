@@ -30,7 +30,7 @@ useEffect(() => {
 }, [createdAt]);
 
   return (
-    <li className={`${isCompleted ? 'completed' : ''} ${isEditing ? 'editing' : ''}`}>
+    <li className={`${isCompleted ? 'completed' : ''}`}>
       <div className="view" >
       <input
           className="toggle"
@@ -57,7 +57,6 @@ Task.defaultProps = {
   task: {
     description: '',
     isCompleted: false,
-    isEditing: false,
     createdAt: new Date().toISOString()
   }
 };
@@ -68,7 +67,6 @@ Task.propTypes = {
   task: PropTypes.shape({
     description: PropTypes.string.isRequired,
     isCompleted: PropTypes.bool.isRequired,
-    isEditing: PropTypes.bool.isRequired,
     createdAt: PropTypes.string.isRequired
   }).isRequired
 };
