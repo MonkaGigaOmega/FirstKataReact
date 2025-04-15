@@ -1,13 +1,32 @@
 // components/Task.js
-import { formatDistanceToNow } from 'date-fns';
+import { formatDistanceToNow, differenceInSeconds } from 'date-fns';
+import { useState, useEffect } from 'react';
 
 const Task = ({ onCompleted, onDestroy,task }) => {
 
 const { description, isCompleted, isEditing, createdAt} = task;
 
-const formattedDate = formatDistanceToNow(createdAt, { addSuffix: true });
+const [formattedDate, setFormattedDate] = useState('');
 
+useEffect(() => {
+  const updateFormattedDate = () => {
+    const now = new Date();
+    const created = new Date(createdAt);
+    const secondsDiff = differenceInSeconds(now, created);
 
+    if (secondsDiff < 60) {
+      setFormattedDate(`${secondsDiff} seconds ago`);
+    } else {
+      setFormattedDate(formatDistanceToNow(created, { addSuffix: true }));
+    }
+  };
+
+  updateFormattedDate(); // Initial update
+
+  const timer = setInterval(updateFormattedDate, 1000);
+
+  return () => clearInterval(timer);
+}, [createdAt]);
 
   return (
     <li className={`${isCompleted ? 'completed' : ''} ${isEditing ? 'editing' : ''}`}>
