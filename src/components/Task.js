@@ -1,6 +1,7 @@
-// components/Task.js
+
 import { formatDistanceToNow, differenceInSeconds } from 'date-fns';
 import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
 const Task = ({ onCompleted, onDestroy,task }) => {
 
@@ -21,7 +22,7 @@ useEffect(() => {
     }
   };
 
-  updateFormattedDate(); // Initial update
+  updateFormattedDate();
 
   const timer = setInterval(updateFormattedDate, 1000);
 
@@ -48,6 +49,28 @@ useEffect(() => {
       {isEditing && <input type="text" className="edit" value={description} readOnly />}
     </li>
   );
+};
+
+Task.defaultProps = {
+  onCompleted: () => {},
+  onDestroy: () => {},
+  task: {
+    description: '',
+    isCompleted: false,
+    isEditing: false,
+    createdAt: new Date().toISOString()
+  }
+};
+
+Task.propTypes = {
+  onCompleted: PropTypes.func,
+  onDestroy: PropTypes.func,
+  task: PropTypes.shape({
+    description: PropTypes.string.isRequired,
+    isCompleted: PropTypes.bool.isRequired,
+    isEditing: PropTypes.bool.isRequired,
+    createdAt: PropTypes.string.isRequired
+  }).isRequired
 };
 
 export default Task;
