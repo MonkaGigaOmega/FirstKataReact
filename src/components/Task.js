@@ -1,4 +1,3 @@
-
 import { formatDistanceToNow, differenceInSeconds } from 'date-fns';
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
