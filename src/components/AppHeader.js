@@ -1,11 +1,11 @@
-import NewTaskForm from './NewTaskForm.js';
+import NewTaskForm from './NewTaskForm'
 
-const AppHeader = ({ tasks, setTasks }) => {
+function AppHeader({ tasks, setTasks }) {
   return (
     <>
       <h1>todos</h1>
       <NewTaskForm tasks={tasks} setTasks={setTasks} />
     </>
-  );
-};
-export default AppHeader;
+  )
+}
+export default AppHeader

@@ -1,13 +1,13 @@
-import Task from './Task';
+import Task from './Task'
 
-const TaskList = ({ tasks, setTasks }) => {
+function TaskList({ tasks, setTasks }) {
   const handleDestroy = (id) => {
-    setTasks(tasks.filter((task) => task.id !== id));
-  };
+    setTasks(tasks.filter((task) => task.id !== id))
+  }
 
   const handleCompleted = (id) => {
-    setTasks(tasks.map((task) => (task.id === id ? { ...task, isCompleted: !task.isCompleted } : task)));
-  };
+    setTasks(tasks.map((task) => (task.id === id ? { ...task, isCompleted: !task.isCompleted } : task)))
+  }
 
   return (
     <ul className="todo-list">
@@ -15,7 +15,7 @@ const TaskList = ({ tasks, setTasks }) => {
         <Task key={task.id} onDestroy={handleDestroy} onCompleted={handleCompleted} task={task} />
       ))}
     </ul>
-  );
-};
+  )
+}
 
-export default TaskList;
+export default TaskList

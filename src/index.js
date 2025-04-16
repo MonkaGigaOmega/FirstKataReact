@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import ReactDOM from 'react-dom/client';
-import AppHeader from './components/AppHeader';
-import Footer from './components/Footer';
-import TaskList from './components/TaskList';
-import './styles.css';
+import React, { useState } from 'react'
+import ReactDOM from 'react-dom/client'
+
+import AppHeader from './components/AppHeader'
+import Footer from './components/Footer'
+import TaskList from './components/TaskList'
+import './styles.css'
 
 function App() {
   const [tasks, setTasks] = useState([
@@ -25,9 +26,9 @@ function App() {
       isCompleted: false,
       createdAt: new Date(),
     },
-  ]);
+  ])
 
-  const [filteredTasks, setFilteredTasks] = useState(tasks);
+  const [filteredTasks, setFilteredTasks] = useState(tasks)
 
   return (
     <section className="main">
@@ -35,9 +36,9 @@ function App() {
       <TaskList tasks={tasks} setTasks={setTasks} />
       <Footer tasks={tasks} setTasks={setTasks} filteredTasks={filteredTasks} setFilteredTasks={setFilteredTasks} />
     </section>
-  );
+  )
 }
 
-const rootElement = document.getElementById('root');
-const root = ReactDOM.createRoot(rootElement);
-root.render(<App />);
+const rootElement = document.getElementById('root')
+const root = ReactDOM.createRoot(rootElement)
+root.render(<App />)
