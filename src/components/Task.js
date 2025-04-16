@@ -2,48 +2,46 @@ import { formatDistanceToNow, differenceInSeconds } from 'date-fns';
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-const Task = ({ onCompleted, onDestroy,task }) => {
+const Task = ({ onCompleted, onDestroy, task }) => {
+  const { description, isCompleted, isEditing, createdAt } = task;
+  const [formattedDate, setFormattedDate] = useState('');
 
-const { description, isCompleted, isEditing, createdAt} = task;
+  useEffect(() => {
+    const updateFormattedDate = () => {
+      const now = new Date();
+      const created = new Date(createdAt);
+      const secondsDiff = differenceInSeconds(now, created);
 
-const [formattedDate, setFormattedDate] = useState('');
+      if (secondsDiff < 60) {
+        setFormattedDate(`${secondsDiff} seconds ago`);
+      } else {
+        setFormattedDate(formatDistanceToNow(created, { addSuffix: true }));
+      }
+    };
 
-useEffect(() => {
-  const updateFormattedDate = () => {
-    const now = new Date();
-    const created = new Date(createdAt);
-    const secondsDiff = differenceInSeconds(now, created);
+    updateFormattedDate();
 
-    if (secondsDiff < 60) {
-      setFormattedDate(`${secondsDiff} seconds ago`);
-    } else {
-      setFormattedDate(formatDistanceToNow(created, { addSuffix: true }));
-    }
-  };
+    const timer = setInterval(updateFormattedDate, 1000);
 
-  updateFormattedDate();
-
-  const timer = setInterval(updateFormattedDate, 1000);
-
-  return () => clearInterval(timer);
-}, [createdAt]);
+    return () => clearInterval(timer);
+  }, [createdAt]);
 
   return (
     <li className={`${isCompleted ? 'completed' : ''}`}>
-      <div className="view" >
-      <input
+      <div className="view">
+        <input
           className="toggle"
           type="checkbox"
           checked={isCompleted}
           readOnly
-          onChange={()=>onCompleted(task.id)}
+          onChange={() => onCompleted(task.id)}
         />
-        <label onClick={()=>onCompleted(task.id)}>
+        <label onClick={() => onCompleted(task.id)}>
           <span className="description">{description}</span>
           <span className="created">{formattedDate}</span>
         </label>
         <button className="icon icon-edit"></button>
-        <button className="icon icon-destroy" onClick={()=>onDestroy(task.id)}></button>
+        <button className="icon icon-destroy" onClick={() => onDestroy(task.id)}></button>
       </div>
       {isEditing && <input type="text" className="edit" value={description} readOnly />}
     </li>
@@ -56,8 +54,8 @@ Task.defaultProps = {
   task: {
     description: '',
     isCompleted: false,
-    createdAt: new Date().toISOString()
-  }
+    createdAt: new Date().toISOString(),
+  },
 };
 
 Task.propTypes = {
@@ -66,9 +64,8 @@ Task.propTypes = {
   task: PropTypes.shape({
     description: PropTypes.string.isRequired,
     isCompleted: PropTypes.bool.isRequired,
-    createdAt: PropTypes.string.isRequired
-  }).isRequired
+    createdAt: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default Task;
-
