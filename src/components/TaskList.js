@@ -2,7 +2,7 @@ import Task from './Task'
 
 function TaskList({ tasks, setTasks, origTasks }) {
   const handleDestroy = (id) => {
-    setTasks(tasks.filter((task) => task.id !== id))
+    setTasks(origTasks.filter((task) => task.id !== id))
   }
   const handleCompleted = (id) => {
     setTasks(origTasks.map((task) => (task.id === id ? { ...task, isCompleted: !task.isCompleted } : task)))
