@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import { formatDistanceToNow, differenceInSeconds } from 'date-fns'
 import { useState, useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
@@ -6,7 +7,7 @@ function Task({ onCompleted, onDestroy, task }) {
   const { description, isCompleted, createdAt, time: initialTime } = task
   const [formattedDate, setFormattedDate] = useState('')
   const [time, setTime] = useState(initialTime)
-  const [isRunning, setIsRunning] = useState(true)
+  const [isRunning, setIsRunning] = useState(false)
   const timerRef = useRef(null)
 
   useEffect(() => {
@@ -47,8 +48,12 @@ function Task({ onCompleted, onDestroy, task }) {
     return () => clearInterval(timerRef.current)
   }, [isRunning, isCompleted])
 
-  function toggleTimer() {
-    setIsRunning((prev) => !prev)
+  function pauseTimer() {
+    setIsRunning(false)
+  }
+
+  function playTimer() {
+    setIsRunning(true)
   }
 
   function getFormatedTime(ms) {
@@ -70,11 +75,15 @@ function Task({ onCompleted, onDestroy, task }) {
           readOnly
           onChange={() => onCompleted(task.id)}
         />
-        <label htmlFor={`task-${task.id}`}>
+        <label className="task-label" htmlFor={`task-${task.id}`}>
           <span className="description">{description}</span>
-          <button type="button" className={`${isCompleted ? 'completed timer' : 'timer'}`} onClick={toggleTimer}>
-            {getFormatedTime(time)}
-          </button>
+          <div>
+            <button type="button" aria-label="Play timer" className="icon icon-play" onClick={playTimer} />
+            <button type="button" aria-label="Pause timer" className="icon icon-pause" onClick={pauseTimer} />
+            <span type="button" className={`${isCompleted ? 'completed timer' : 'timer'}`}>
+              {getFormatedTime(time)}
+            </span>
+          </div>
           <span className="created">{formattedDate}</span>
         </label>
         <button aria-label="delete task" type="button" className="icon icon-edit" />

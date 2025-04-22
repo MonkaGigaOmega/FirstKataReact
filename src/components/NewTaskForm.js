@@ -24,12 +24,14 @@ function NewTaskForm({ tasks, setTasks }) {
   }
 
   const addTask = () => {
+    const minutes = minTime === '' ? 0 : parseInt(minTime, 10)
+    const seconds = secTime === '' ? 0 : parseInt(secTime, 10)
     const newTask = {
       id: tasks.length ? tasks[tasks.length - 1].id + 1 : 1,
       description,
       isCompleted: false,
       createdAt: new Date(),
-      time: (minTime * 60 + parseInt(secTime, 10)) * 1000,
+      time: (minutes * 60 + seconds) * 1000,
     }
     setTasks([...tasks, newTask])
   }
@@ -52,7 +54,9 @@ function NewTaskForm({ tasks, setTasks }) {
       />
       <input type="number" className="new-todo-form__timer" placeholder="Min" value={minTime} onChange={onMinChange} />
       <input type="number" className="new-todo-form__timer" placeholder="Sec" value={secTime} onChange={onSecChange} />
-      <button type="submit">Add Task</button>
+      <button className="form-button" type="submit">
+        Add Task
+      </button>
     </form>
   )
 }
