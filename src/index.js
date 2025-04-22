@@ -1,8 +1,9 @@
+/* eslint-disable indent */
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom/client'
 
-import AppHeader from './components/AppHeader'
 import Footer from './components/Footer'
+import AppHeader from './components/AppHeader'
 import TaskList from './components/TaskList'
 import './styles.css'
 
@@ -27,14 +28,25 @@ function App() {
       createdAt: new Date(),
     },
   ])
-
-  const [filteredTasks, setFilteredTasks] = useState(tasks)
-
+  const [term, setTerm] = useState('All')
+  function filterFunc(items, filter) {
+    switch (filter) {
+      case 'All':
+        return items
+      case 'Active':
+        return items.filter((item) => !item.isCompleted)
+      case 'Completed':
+        return items.filter((item) => item.isCompleted)
+      default:
+        return items
+    }
+  }
+  const visibleTasks = filterFunc(tasks, term)
   return (
     <section className="main">
-      <AppHeader tasks={tasks} setTasks={setTasks} />
-      <TaskList tasks={tasks} setTasks={setTasks} />
-      <Footer tasks={tasks} setTasks={setTasks} filteredTasks={filteredTasks} setFilteredTasks={setFilteredTasks} />
+      <AppHeader tasks={visibleTasks} setTasks={setTasks} />
+      <TaskList tasks={visibleTasks} setTasks={setTasks} origTasks={tasks} />
+      <Footer tasks={visibleTasks} setTasks={setTasks} term={term} setTerm={setTerm} />
     </section>
   )
 }

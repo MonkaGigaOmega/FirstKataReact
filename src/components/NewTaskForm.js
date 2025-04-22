@@ -9,21 +9,20 @@ function NewTaskForm({ tasks, setTasks }) {
 
   const addTask = () => {
     const newTask = {
-      id: tasks.length ? tasks[tasks.length - 1].id + 1 : 1, // Генерация нового ID
+      id: tasks.length ? tasks[tasks.length - 1].id + 1 : 1,
       description,
       isCompleted: false,
       isEditing: false,
       createdAt: new Date(),
     }
-    setTasks([...tasks, newTask]) // Обновление списка задач
+    setTasks([...tasks, newTask])
   }
 
   const onSubmit = (e) => {
     e.preventDefault()
     if (description.trim()) {
-      // Проверка, что поля не пустые
       addTask()
-      setDescription('') // Очистка поля ввода для описания
+      setDescription('')
     }
   }
   return (
