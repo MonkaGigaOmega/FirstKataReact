@@ -14,18 +14,21 @@ function App() {
       description: 'Completed task',
       isCompleted: true,
       createdAt: new Date(),
+      time: 0,
     },
     {
       id: 2,
       description: 'Active task',
       isCompleted: false,
       createdAt: new Date(),
+      time: 600000,
     },
     {
       id: 3,
-      description: 'Active task',
-      isCompleted: false,
+      description: 'Completed task',
+      isCompleted: true,
       createdAt: new Date(),
+      time: 300000,
     },
   ])
   const [term, setTerm] = useState('All')
