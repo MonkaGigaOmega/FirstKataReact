@@ -1,15 +1,17 @@
+/* eslint-disable consistent-return */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { formatDistanceToNow, differenceInSeconds } from 'date-fns'
 import { useState, useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
 
-function Task({ onCompleted, onDestroy, task }) {
-  const { description, isCompleted, createdAt, time: initialTime } = task
+function Task({ onCompleted, onDestroy, task, onEditing }) {
+  const { description, isCompleted, isEditing, createdAt, time: initialTime } = task
   const [formattedDate, setFormattedDate] = useState('')
   const [time, setTime] = useState(initialTime)
   const [isRunning, setIsRunning] = useState(false)
   const timerRef = useRef(null)
-
+  const lastUpdateRef = useRef(Date.now())
+  const [localDescription, setLocalDescription] = useState(description)
   useEffect(() => {
     const updateFormattedDate = () => {
       const now = new Date()
@@ -24,48 +26,60 @@ function Task({ onCompleted, onDestroy, task }) {
     }
 
     updateFormattedDate()
+    const intervalId = setInterval(updateFormattedDate, 1000)
 
-    const timer = setInterval(updateFormattedDate, 1000)
-
-    return () => clearInterval(timer)
+    return () => clearInterval(intervalId)
   }, [createdAt])
 
   useEffect(() => {
-    if (isRunning && !isCompleted) {
-      timerRef.current = setInterval(() => {
-        setTime((prevTime) => {
-          if (prevTime > 0) {
-            return prevTime - 1000
-          }
-          clearInterval(timerRef.current)
-          return 0
-        })
-      }, 1000)
-    } else {
-      clearInterval(timerRef.current)
-    }
+    if (isRunning && !isCompleted && time > 0) {
+      lastUpdateRef.current = Date.now()
 
-    return () => clearInterval(timerRef.current)
+      timerRef.current = setInterval(() => {
+        const now = Date.now()
+        const delta = now - lastUpdateRef.current
+        lastUpdateRef.current = now
+
+        setTime((prevTime) => {
+          const newTime = prevTime - delta
+          if (newTime <= 0) {
+            setIsRunning(false)
+            return 0
+          }
+          return newTime
+        })
+      }, 100)
+
+      return () => clearInterval(timerRef.current)
+    }
   }, [isRunning, isCompleted])
 
-  function pauseTimer() {
-    setIsRunning(false)
-  }
+  const pauseTimer = () => setIsRunning(false)
 
-  function playTimer() {
+  const playTimer = () => {
+    lastUpdateRef.current = Date.now()
     setIsRunning(true)
   }
 
-  function getFormatedTime(ms) {
+  const getFormatedTime = (ms) => {
     const totalSeconds = Math.floor(ms / 1000)
-    const totalMin = Math.floor(totalSeconds / 60)
+    const minutes = Math.floor(totalSeconds / 60)
     const seconds = totalSeconds % 60
-    const min = Math.floor(totalMin % 60)
 
-    return `${min.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
+    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
   }
+
+  const onEdit = (e) => {
+    e.preventDefault()
+    onEditing(task.id, localDescription)
+  }
+
+  const onDescriptionChange = (e) => {
+    setLocalDescription(e.target.value)
+  }
+
   return (
-    <li className={`${isCompleted ? 'completed' : ''}`}>
+    <li className={`${isCompleted ? 'completed' : ''} ${isEditing ? 'editing' : ''}`}>
       <div className="view">
         <input
           id={`task-${task.id}`}
@@ -86,9 +100,14 @@ function Task({ onCompleted, onDestroy, task }) {
           </div>
           <span className="created">{formattedDate}</span>
         </label>
-        <button aria-label="delete task" type="button" className="icon icon-edit" />
+        <button aria-label="delete task" type="button" className="icon icon-edit" onClick={() => onEditing(task.id)} />
         <button aria-label="edit task" type="button" className="icon icon-destroy" onClick={() => onDestroy(task.id)} />
       </div>
+      {isEditing && (
+        <form onSubmit={onEdit}>
+          <input className="edit" type="text" value={localDescription} onChange={onDescriptionChange} />
+        </form>
+      )}
     </li>
   )
 }

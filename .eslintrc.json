@@ -10,7 +10,7 @@
     "plugin:import/errors",
     "plugin:import/warnings",
     "plugin:prettier/recommended",
-    "airbnb" // Добавлено: конфигурация ESLint от Airbnb
+    "airbnb"
   ],
   "parserOptions": {
     "ecmaFeatures": {
@@ -19,12 +19,7 @@
     "ecmaVersion": 12,
     "sourceType": "module"
   },
-  "plugins": [
-    "react",
-    "prettier",
-    "import",
-    "jsx-a11y" // Добавлено: плагин для проверки доступности JSX
-  ],
+  "plugins": ["react", "prettier", "import", "jsx-a11y"],
   "rules": {
     "indent": ["error", 2],
     "prettier/prettier": "error",

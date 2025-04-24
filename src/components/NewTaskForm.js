@@ -2,8 +2,8 @@ import { useState } from 'react'
 
 function NewTaskForm({ tasks, setTasks }) {
   const [description, setDescription] = useState('')
-  const [minTime, setMinTime] = useState(0)
-  const [secTime, setSecTime] = useState(0)
+  const [minTime, setMinTime] = useState('')
+  const [secTime, setSecTime] = useState('')
 
   const onDescriptionChange = (e) => {
     if (e.target.value.length < 20) {
@@ -30,6 +30,7 @@ function NewTaskForm({ tasks, setTasks }) {
       id: tasks.length ? tasks[tasks.length - 1].id + 1 : 1,
       description,
       isCompleted: false,
+      isEditing: false,
       createdAt: new Date(),
       time: (minutes * 60 + seconds) * 1000,
     }
@@ -41,10 +42,12 @@ function NewTaskForm({ tasks, setTasks }) {
     if (description.trim()) {
       addTask()
       setDescription('')
+      setMinTime('')
+      setSecTime('')
     }
   }
   return (
-    <form onSubmit={onSubmit}>
+    <form className="new-todo-form" onSubmit={onSubmit}>
       <input
         className="new-todo"
         type="text"

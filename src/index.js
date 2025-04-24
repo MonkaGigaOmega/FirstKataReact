@@ -14,6 +14,7 @@ function App() {
       description: 'Completed task',
       isCompleted: true,
       createdAt: new Date(),
+      isEditing: false,
       time: 0,
     },
     {
@@ -21,6 +22,7 @@ function App() {
       description: 'Active task',
       isCompleted: false,
       createdAt: new Date(),
+      isEditing: false,
       time: 600000,
     },
     {
@@ -28,6 +30,7 @@ function App() {
       description: 'Completed task',
       isCompleted: true,
       createdAt: new Date(),
+      isEditing: false,
       time: 300000,
     },
   ])
