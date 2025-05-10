@@ -1,20 +1,19 @@
 import { useState } from 'react'
 
-export default function FooterFilter({ setTasks, filteredTasks }) {
+export default function FooterFilter({ setTerm }) {
   const [selectedButton, setSelectedButton] = useState('All')
-
   const handleShowCompleted = () => {
-    setTasks(filteredTasks.filter((task) => task.isCompleted))
+    setTerm('Completed')
     setSelectedButton('Completed')
   }
 
   const handleShowActive = () => {
-    setTasks(filteredTasks.filter((task) => !task.isCompleted && !task.isEditing))
+    setTerm('Active')
     setSelectedButton('Active')
   }
 
   const handleShowAll = () => {
-    setTasks(filteredTasks)
+    setTerm('All')
     setSelectedButton('All')
   }
 

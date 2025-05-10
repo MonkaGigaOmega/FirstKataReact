@@ -2,32 +2,52 @@ import { useState } from 'react'
 
 function NewTaskForm({ tasks, setTasks }) {
   const [description, setDescription] = useState('')
+  const [minTime, setMinTime] = useState('')
+  const [secTime, setSecTime] = useState('')
 
   const onDescriptionChange = (e) => {
-    setDescription(e.target.value)
+    if (e.target.value.length < 20) {
+      setDescription(e.target.value)
+    }
+  }
+
+  const onMinChange = (e) => {
+    if (e.target.value < 60) {
+      setMinTime(e.target.value)
+    }
+  }
+
+  const onSecChange = (e) => {
+    if (e.target.value < 60) {
+      setSecTime(e.target.value)
+    }
   }
 
   const addTask = () => {
+    const minutes = minTime === '' ? 0 : parseInt(minTime, 10)
+    const seconds = secTime === '' ? 0 : parseInt(secTime, 10)
     const newTask = {
-      id: tasks.length ? tasks[tasks.length - 1].id + 1 : 1, // Генерация нового ID
+      id: tasks.length ? tasks[tasks.length - 1].id + 1 : 1,
       description,
       isCompleted: false,
       isEditing: false,
       createdAt: new Date(),
+      time: (minutes * 60 + seconds) * 1000,
     }
-    setTasks([...tasks, newTask]) // Обновление списка задач
+    setTasks([...tasks, newTask])
   }
 
   const onSubmit = (e) => {
     e.preventDefault()
     if (description.trim()) {
-      // Проверка, что поля не пустые
       addTask()
-      setDescription('') // Очистка поля ввода для описания
+      setDescription('')
+      setMinTime('')
+      setSecTime('')
     }
   }
   return (
-    <form onSubmit={onSubmit}>
+    <form className="new-todo-form" onSubmit={onSubmit}>
       <input
         className="new-todo"
         type="text"
@@ -35,7 +55,11 @@ function NewTaskForm({ tasks, setTasks }) {
         value={description}
         onChange={onDescriptionChange}
       />
-      <button type="submit">Add Task</button>
+      <input type="number" className="new-todo-form__timer" placeholder="Min" value={minTime} onChange={onMinChange} />
+      <input type="number" className="new-todo-form__timer" placeholder="Sec" value={secTime} onChange={onSecChange} />
+      <button className="form-button" type="submit">
+        Add Task
+      </button>
     </form>
   )
 }
